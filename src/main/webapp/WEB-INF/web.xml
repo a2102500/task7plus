@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+<!--xml编辑器显示的名称-->
+  <display-name>Archetype Created Web Application</display-name>
+
+  <!--用来声明应用范围(整个web项目)内的上下文初始化参数-->
+  <!--param-name设定上下文参数名称,必须是唯一名称-->
+  <!--param-value设定的参数名称的值-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring-mybatis.xml</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>classpath:log4j.properties</param-value>
+  </context-param>
+
+  <!-- 编码过滤器 -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <!--过滤器映射-->
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- spring监听器 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!-- 防止spring内存溢出监听器，比如quartz -->
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+
+
+
+
+  <!-- spring mvc servlet-->
+    <!--对客户端请求的静态资源如图片,js文件等请求交由默认的servlet进行处理-->
+  <servlet>
+    <servlet-name>SpringMVC</servlet-name>
+      <!--存疑,这里不应该是对应的class文件,包名+类名么-->
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <!--用来定义参数,可有多个init-param.在servlet类中通过getInitParamenter(String name)方法访问初始化参数-->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-mvc.xml</param-value>
+    </init-param>
+      <!--指定当web应用启动时,装载servlet的次序.当值为整正数或0时,servlet容器先加载数值较小的servlet,再依次加载其他数值大的servlet.当值为负或未定义,servlet容器将在web客户首次访问这个servlet时加载它-->
+    <load-on-startup>1</load-on-startup>
+    <async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+      <!--与servlet中的name要一致-->
+    <servlet-name>SpringMVC</servlet-name>
+    <!-- 此处也可以配置成 *.do 形式 -->
+      <!--浏览器访问网址-->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+    <!--欢迎文件页-->
+  <welcome-file-list>
+    <welcome-file>/index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <!-- session会话超时配置,单位为分钟 -->
+  <session-config>
+    <session-timeout>15</session-timeout>
+  </session-config>
+
+  <!-- 自定义JSTL时间格式化 -->
+  <!--<jsp-config>-->
+    <!--<taglib>-->
+      <!--<taglib-uri>/tags</taglib-uri>-->
+      <!--<taglib-location>/WEB-INF/datetag.tld</taglib-location>-->
+    <!--</taglib>-->
+  <!--</jsp-config>-->
+
+</web-app>
